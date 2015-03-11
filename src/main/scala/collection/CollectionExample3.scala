@@ -1,7 +1,9 @@
 package collection
 
 object CollectionExample3 extends App {
-  def process(input: List[Article]): Map[String, Map[String, Int]] = ???
+  def process(input: List[Article]): Map[String, Map[String, Int]] = {
+   ???
+  }
 
   val output = process(ArticleList.input)
 

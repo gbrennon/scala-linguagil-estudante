@@ -33,10 +33,10 @@ object Todo {
 
   val endpoint: Endpoint[HttpRequest, HttpResponse] =
     (Get / "todo" / int("id") />  getTodo) |
-      (???) | // Defina a rota para listar
+      (Get / "todo" /> listTodo) // Defina a rota para listar
       (Post / "todo" /> createTodo) |
-      (???) | // Defina a rota de Delete
-      (???) // Defina a rota de Editar
+      (Delete / "todo" / int("id")) /> deleteTodo | // Defina a rota de Delete
+      (Put / "todo" / int("id") /> editTodo) // Defina a rota de Editar
 
   val todoReader: RequestReader[Todo] = RequiredBody.as[Todo]
 
@@ -49,7 +49,11 @@ object Todo {
     }
   }
 
-  def listTodo() = ???
+  def listTodo() = new Service[HttpRequest, HttpResponse] {
+    def apply(req: HttpRequest): Future[HttpResponse] = {
+      todos.
+    }
+  }
 
   def createTodo() = new Service[HttpRequest, HttpResponse] {
     def apply(req: HttpRequest): Future[HttpResponse] = {
@@ -73,8 +77,11 @@ object Todo {
 object Store {
   case class Todo(id: Int, title: String, description: String, finished: Boolean = false)
 
-  val todos: mutable.Map[Int, Todo] = ???
+  val todos: mutable.Map[Int, Todo] = mutable.HashMap[Int, Todo]()
 
-  var currentId: Int = ???
-  def nextId(): Int = ???
+  var currentId: Int = 0
+  def nextId(): Int = {
+    currentId += 1
+    currentId
+  }
 }
